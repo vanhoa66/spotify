@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Search from './../components/Search'
 import ArtistsList from './../components/ArtistsList'
-
+import { actGoHome } from './../actions/index';
 class HomePage extends Component {
-
+  componentDidMount() {
+    this.props.changeBreadcrumb();
+  }
   render() {
     return (
       <div className="panel panel-info">
@@ -18,5 +20,11 @@ class HomePage extends Component {
     );
   }
 }
-export default HomePage
-
+const mapDispatchToProps = dispatch => {
+  return {
+    changeBreadcrumb: () => {
+      dispatch(actGoHome());
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(HomePage);

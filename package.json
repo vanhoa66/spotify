@@ -4,13 +4,16 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cls-bluebird": "^2.1.0",
     "query-string": "^6.0.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "spotify-middleware-webapi": "^1.3.3",
+    "spotify-refresh": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

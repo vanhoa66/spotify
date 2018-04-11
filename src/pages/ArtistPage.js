@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 import SpotifyAxios from './../services/SpotifyAxios'
-
 import Album from './../components/Album'
+import { actGoArtist } from './../actions'
 
 class ArtistPage extends Component {
     constructor(props) {
@@ -12,25 +13,31 @@ class ArtistPage extends Component {
             albums: []
         };
     }
-
-    loadArtist(id) {
-        SpotifyAxios.getOneArtist(id)
-            .then(response => {
-                this.setState({ artist: response.data });
-            })
-    }
-
-    loadAblums(id) {
-        SpotifyAxios.getAblums(id)
-            .then(response => {
-                this.setState({ albums: response.data.items });
-            })
-    }
     componentWillMount() {
         let { id } = this.props.match.params;
         this.loadArtist(id);
         this.loadAblums(id);
     }
+
+    loadArtist(id) {
+        SpotifyAxios.getOneArtist(id)
+            .then(response => {
+                if (response !== undefined && response.data !== null) {
+                    this.setState({ artist: response.data });
+                    this.props.changeBreadcrumb(`/artist/${response.data.id}`, response.data.name);
+                }
+            });
+    }
+
+    loadAblums(id) {
+        SpotifyAxios.getAblums(id)
+            .then(response => {
+                if (response !== undefined && response.data !== null) {
+                this.setState({ albums: response.data.items });
+                }
+            })
+    }
+
     render() {
         let artist = { name: '', images: [], external_urls: '', genres: [] }
         let { albums } = this.state;
@@ -48,7 +55,7 @@ class ArtistPage extends Component {
                                 <p>{artist.name}</p>
                             </blockquote>
                             <p><i className="glyphicon glyphicon-play-circle" />
-                                <a rel="noopener noreferrer" target="_blank" href={artist.external_urls.spotify}> View Spotify</a>
+                                <a rel="noopener noreferrer" href={artist.external_urls.spotify}> View Spotify</a>
                                 <br /><br />
                                 <i className="glyphicon glyphicon-play-circle" /> Genres: {this.showGenres(artist.genres)}
                             </p>
@@ -98,6 +105,14 @@ class ArtistPage extends Component {
         return xhtml;
     }
 }
-export default ArtistPage
+const mapDispatchToProps = dispatch => {
+    return {
+        changeBreadcrumb: (to, name) => {
+            dispatch(actGoArtist(to, name));
+        }
+    }
+}
+export default connect(null, mapDispatchToProps)(ArtistPage);
+
 
 

@@ -13,11 +13,11 @@ class ArtistsList extends Component {
       artists: []
     };
   }
-  searchArtist(query) {
-    if (query !== "") {
-      SpotifyAxios.getArtists(query)
+  searchArtist(search) {
+    if (search !== "") {
+      SpotifyAxios.getArtists(search)
         .then(response => {
-          if (response !== undefined) {
+          if (response !== undefined && response.data !== null) {
             this.setState({ artists: response.data.artists.items });
           }
         })
@@ -26,7 +26,7 @@ class ArtistsList extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentWillMount() {
     this.searchArtist(this.props.search)
   }
 
@@ -35,12 +35,13 @@ class ArtistsList extends Component {
   }
   render() {
     let { artists } = this.state;
-    let xhtml = "Enter Name";
+    let { search } = this.props;
+    let xhtml = <h3>Enter artist's name to start</h3>;
     if (artists.length > 0) {
       xhtml = artists.map((artist, index) => {
         return <Artist key={index} artist={artist} />
       })
-    } else {
+    } else if (search !== '') {
       xhtml = "No data"
     }
     return (

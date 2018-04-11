@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 import SpotifyAxios from './../services/SpotifyAxios'
-
 import Track from './../components/Track'
+import { actGoAlbum } from './../actions'
 
 class AlbumPage extends Component {
     constructor(props) {
@@ -16,14 +17,19 @@ class AlbumPage extends Component {
     loadAlbum(id) {
         SpotifyAxios.getOneAlbum(id)
             .then(response => {
-                this.setState({ album: response.data });
+                if (response !== undefined && response.data !== null) {
+                    this.setState({ album: response.data });
+                    this.props.changeBreadcrumb(`/album/${response.data.id}`, response.data.name);
+                }
             })
     }
 
     loadTracks(id) {
         SpotifyAxios.getTracks(id)
             .then(response => {
+                if (response !== undefined && response.data !== null) {
                 this.setState({ tracks: response.data.items });
+                }
             })
     }
     componentWillMount() {
@@ -35,7 +41,6 @@ class AlbumPage extends Component {
         let album = { name: '', images: [] }
         let { tracks } = this.state;
         album = (this.state.album !== null) ? this.state.album : album;
-        console.log(tracks);
         return (
             <div className="panel panel-danger">
                 <div className="panel-heading">
@@ -81,6 +86,16 @@ class AlbumPage extends Component {
         return xhtml;
     }
 }
-export default AlbumPage
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeBreadcrumb: (name, to) => {
+            dispatch(actGoAlbum(name, to));
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AlbumPage);
+
 
 
