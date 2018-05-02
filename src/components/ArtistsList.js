@@ -14,8 +14,9 @@ class ArtistsList extends Component {
     };
   }
   searchArtist(search) {
+    let { token } = this.props;
     if (search !== "") {
-      SpotifyAxios.getArtists(search)
+      SpotifyAxios.getArtists(search, token)
         .then(response => {
           if (response !== undefined && response.data !== null) {
             this.setState({ artists: response.data.artists.items });
@@ -55,6 +56,7 @@ class ArtistsList extends Component {
 const mapStateToProps = state => {
   return {
     search: state.search,
+    token: state.token,
   }
 }
 

@@ -36,7 +36,6 @@ class Breadcrumb extends Component {
         }
         return null;
       });
-      console.log(xhtml);
       return <ol className="breadcrumb">{xhtml}</ol>
     }
   }

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Search from './../components/Search'
 import ArtistsList from './../components/ArtistsList'
 import { actGoHome } from './../actions/index';
+import Token from '../components/Token';
+
 class HomePage extends Component {
   componentDidMount() {
     this.props.changeBreadcrumb();
@@ -10,6 +12,9 @@ class HomePage extends Component {
   render() {
     return (
       <div className="panel panel-info">
+        <div className="panel-heading">
+          <Token />
+        </div>
         <div className="panel-heading">
           <Search />
         </div>

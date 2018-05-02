@@ -20,7 +20,8 @@ class ArtistPage extends Component {
     }
 
     loadArtist(id) {
-        SpotifyAxios.getOneArtist(id)
+        let { token } = this.props;
+        SpotifyAxios.getOneArtist(id, token)
             .then(response => {
                 if (response !== undefined && response.data !== null) {
                     this.setState({ artist: response.data });
@@ -30,10 +31,11 @@ class ArtistPage extends Component {
     }
 
     loadAblums(id) {
-        SpotifyAxios.getAblums(id)
+        let { token } = this.props;
+        SpotifyAxios.getAblums(id, token)
             .then(response => {
                 if (response !== undefined && response.data !== null) {
-                this.setState({ albums: response.data.items });
+                    this.setState({ albums: response.data.items });
                 }
             })
     }
@@ -105,6 +107,13 @@ class ArtistPage extends Component {
         return xhtml;
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        token: state.token,
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         changeBreadcrumb: (to, name) => {
@@ -112,7 +121,7 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-export default connect(null, mapDispatchToProps)(ArtistPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistPage);
 
 
 
